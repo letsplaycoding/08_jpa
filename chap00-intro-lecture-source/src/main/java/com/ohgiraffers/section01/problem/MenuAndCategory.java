@@ -5,6 +5,8 @@ public class MenuAndCategory {
     private int menuCode;
     private String menuName;
     private int menuPrice;
+
+    // 필기. MenuAndCategory 는 Category class에 의존하고 있다~ Category를 자신의 필드에 가져옴으로써 Category class가 없으면 안된다
     private Category category;
     private String orderableStatus;
 
