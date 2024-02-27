@@ -98,7 +98,7 @@ public class ProblemOfUsingDirectSQLTests { // SQL을 직접 썼을때 사용하
 
     // 설명. 2. SQL에 의존하여 개발해야한다.
     // 설명. 2-1. 조회 항목 변경에 따른 의존성 확인
-    @DisplayName("조회 항복 변경에 따른 의존성 확인")
+    @DisplayName("조회 항목 변경에 따른 의존성 확인")
     @Test
     void testChangeSelectColumns() throws SQLException {
 

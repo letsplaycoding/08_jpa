@@ -105,4 +105,77 @@ public class A_EntityLifeCycleTests {
 
         assertEquals("메론죽", foundMenu.getMenuName());
     }
+
+    @Test
+    public void 준영속성_detach_테스트() {
+
+        Menu foundMenu1 = entityManager.find(Menu.class, 11);
+        Menu foundMenu2 = entityManager.find(Menu.class, 12);
+
+        /* 설명.
+         *  영속성 컨텍스트가 관리하던 엔티티 객체를 관리하지 않는 상태가 되게 한 것을 준영속 상태라고 한다.
+         *  detach 가 준영속 상태를 만들기 위한 메소드이다.
+        * */
+        entityManager.detach(foundMenu2);
+
+        foundMenu1.setMenuPrice(5000);
+        foundMenu2.setMenuPrice(5000);
+
+        assertEquals(5000, entityManager.find(Menu.class, 11).getMenuPrice());
+        assertEquals(5000, entityManager.find(Menu.class, 12).getMenuPrice());
+        // pk가 12번인 12번메뉴를 영속성 컨텍스트인 entityManager안에서 detach (빼냈다) 해서 12번 메뉴는 준영속상태가 된다.
+        // 따라서 그 이후 entityManager에게 11번과 12번 메뉴를 달라고 했을 때 entityManager는 12번 메뉴가 없기때문에 db에서 12번을 가져온다.
+        // 따라서 결과 => 내가 setMenuPrice를 5000으로 둔 12번 메뉴는 정작 DB에선 2000이기때문에 빨간불이 뜬다.
+    }
+
+    @Test
+    public void 준영속성_clear_close_테스트() {
+        Menu foundMenu1 = entityManager.find(Menu.class,11);
+        Menu foundMenu2 = entityManager.find(Menu.class,12);
+
+        /* 설명. 영속성 컨텍스트로 관리되던 엔티티 객체들을 모두 비영속 상태로 바꿈 */
+//        entityManager.clear();
+
+        /* 설명. 영속성 컨텍스트 및 EntityManager까지 종료해버린다.(사용 불가) */
+        entityManager.close();
+
+        foundMenu1.setMenuPrice(5000);
+        foundMenu2.setMenuPrice(5000);
+
+        /* 설명. DB에서 새로 조회해온 객체를 영속 상태로 두기 때문에 전혀 다른 결과가 나온다. */
+        assertEquals(5000, entityManager.find(Menu.class, 11).getMenuPrice());
+        assertEquals(5000, entityManager.find(Menu.class, 12).getMenuPrice());
+    }
+
+    @Test
+    public void 병합_merge_수정_테스트() {
+        Menu menuToDetach = entityManager.find(Menu.class,2);
+        entityManager.detach(menuToDetach);
+
+        menuToDetach.setMenuName("물티슈죽");   // 물티슈죽
+        Menu refoundMenu = entityManager.find(Menu.class,2);    // 갈치스무디
+
+        System.out.println(menuToDetach.hashCode());
+        System.out.println(refoundMenu.hashCode());
+
+        entityManager.merge(menuToDetach);      // 물티슈죽 돌아와!
+
+        Menu mergedMenu = entityManager.find(Menu.class, 2);
+        assertEquals("물티슈죽", mergedMenu.getMenuName());
+    }
+
+    @Test
+    public void 병합_merge_삽입_테스트() {
+        Menu menuToDetach = entityManager.find(Menu.class, 2);
+        entityManager.detach(menuToDetach);
+
+        menuToDetach.setMenuCode(999);
+        menuToDetach.setMenuName("키캡과자");
+
+        entityManager.merge(menuToDetach);
+
+        Menu newMenu = entityManager.find(Menu.class,2);
+        Menu mergedMenu = entityManager.find(Menu.class,999);
+        assertNotEquals(mergedMenu.getMenuCode(), newMenu.getMenuCode());
+    }
 }
