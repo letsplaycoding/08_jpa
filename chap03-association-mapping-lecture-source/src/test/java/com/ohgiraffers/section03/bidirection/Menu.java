@@ -1,38 +1,32 @@
-package com.ohgiraffers.section02.onetomany;
+package com.ohgiraffers.section03.bidirection;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-
-@Entity(name="menu")
+import jakarta.persistence.*;
+@Entity(name="bidirection_menu")
 @Table(name="tbl_menu")
 public class Menu {
 
     @Id
     @Column(name="menu_code")
     private int menuCode;
-
     @Column(name="menu_name")
     private String menuName;
-
     @Column(name="menu_price")
     private int menuPrice;
 
-    @Column(name="category_code")
-    private int categoryCode;
-
+    @JoinColumn(name="category_code")
+    @ManyToOne
+    private Category category;
     @Column(name="orderable_status")
     private String orderableStatus;
 
-    public Menu() {
-    }
+    public Menu() {}
 
-    public Menu(int menuCode, String menuName, int menuPrice, int categoryCode, String orderableStatus) {
+    public Menu(int menuCode, String menuName, int menuPrice, Category category, String orderableStatus) {
+        super();
         this.menuCode = menuCode;
         this.menuName = menuName;
         this.menuPrice = menuPrice;
-        this.categoryCode = categoryCode;
+        this.category = category;
         this.orderableStatus = orderableStatus;
     }
 
@@ -60,12 +54,12 @@ public class Menu {
         this.menuPrice = menuPrice;
     }
 
-    public int getCategoryCode() {
-        return categoryCode;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setCategoryCode(int categoryCode) {
-        this.categoryCode = categoryCode;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public String getOrderableStatus() {
@@ -78,13 +72,8 @@ public class Menu {
 
     @Override
     public String toString() {
-        return "Menu{" +
-                "menuCode=" + menuCode +
-                ", menuName='" + menuName + '\'' +
-                ", menuPrice=" + menuPrice +
-                ", categoryCode=" + categoryCode +
-                ", orderableStatus='" + orderableStatus + '\'' +
-                '}';
+        return "Menu [menuCode=" + menuCode + ", menuName=" + menuName + ", menuPrice=" + menuPrice + ", category="
+                + category + ", orderableStatus=" + orderableStatus + "]";
     }
-}
 
+}
