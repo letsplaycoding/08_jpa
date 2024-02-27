@@ -1,6 +1,5 @@
-package com.ohgiraffers.section03.primarykey.subsection01.identity;
+package com.ohgiraffers.section03.primarykey.subsection02.table;
 
-import com.ohgiraffers.section03.primarykey.subsection01.identity.Member;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
@@ -9,8 +8,7 @@ import org.junit.jupiter.api.*;
 
 import java.util.List;
 
-
-public class PrimaryKeyMappingTests {
+public class SequenceTableMappingTests {
     private static EntityManagerFactory entityManagerFactory;
 
     private EntityManager entityManager;
@@ -34,21 +32,12 @@ public class PrimaryKeyMappingTests {
     public void closeManager() {
         entityManager.close();
     }
-
-    /* 설명.
-     *  strategy : 자동 생성 전략을 지정
-     *  - GenerationType.IDENTITY : 기본 키 생성을 데이터베이스에 위임(MySQL 또는 MariaDB의 auto_increment)
-     *  - GenerationType.SEQUENCE : 데이터베이스 시퀀스 객체 사용(ORACLE의 SEQUENCE )
-     *  - GenerationType.TABLE : 키 생성 테이블 사용
-     *  - GenerationType.AUTO : 자동 선택(MySQL의 IDENTITY 또는 ORACLE이면 SEQUENCE)
-    * */
-
     @Test
     public void 식별자_매핑_테스트() {
 
         // given
-        com.ohgiraffers.section03.primarykey.subsection01.identity.Member member =
-                new com.ohgiraffers.section03.primarykey.subsection01.identity.Member();
+        com.ohgiraffers.section03.primarykey.subsection02.table.Member member =
+                new com.ohgiraffers.section03.primarykey.subsection02.table.Member();
 //        member.setMemberNo(1);
         member.setMemberId("user01");
         member.setMemberPwd("pass01");
@@ -60,7 +49,8 @@ public class PrimaryKeyMappingTests {
         member.setMemberRole("ROLE_MEMBER");
         member.setStatus("Y");
 
-        Member member2 = new Member();
+        com.ohgiraffers.section03.primarykey.subsection02.table.Member member2
+                = new com.ohgiraffers.section03.primarykey.subsection02.table.Member();
         //        member.setMemberNo(1);
         member2.setMemberId("user2");
         member2.setMemberPwd("pass02");
@@ -78,10 +68,10 @@ public class PrimaryKeyMappingTests {
         entityManager.persist(member2);
         entityTransaction.commit();
 
-        Member selectedMember = entityManager.find(Member.class,1);
+        com.ohgiraffers.section03.primarykey.subsection02.table.Member selectedMember = entityManager.find(Member.class,1);
         System.out.println("selectedMember = " + selectedMember);
 
-        String jpql = "SELECT A.memberNo FROM member_section03_subsection01 A";     // 반드시 별칭을 달아야한다=> 컬럼 x, 속성임
+        String jpql = "SELECT A.memberNo FROM member_section03_subsection02 A";     // 반드시 별칭을 달아야한다=> 컬럼 x, 속성임
         List<Integer> memberNoList = entityManager.createQuery(jpql, Integer.class).getResultList();
 
         memberNoList.forEach(System.out::println);

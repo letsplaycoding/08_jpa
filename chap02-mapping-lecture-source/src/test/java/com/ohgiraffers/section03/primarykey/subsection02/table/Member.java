@@ -1,16 +1,21 @@
-package com.ohgiraffers.section03.primarykey.subsection01.identity;
+package com.ohgiraffers.section03.primarykey.subsection02.table;
 
 import jakarta.persistence.*;
 
 import java.util.Date;
 
-@Entity(name="member_section03_subsection01")
-@Table(name="tbl_member_section03_subsection01")
+@Entity(name="member_section03_subsection02")
+@Table(name="tbl_member_section03_subsection02")
+@TableGenerator(
+        name="member_seq_table_generator",
+        table="tbl_my_sequence",
+        pkColumnValue="my_seq_member_no"
+)
 public class Member {
 
     @Id //pk값을 주겠다는 annotation
     @Column(name="member_no")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)     // auto-increment
+    @GeneratedValue(strategy = GenerationType.TABLE,generator = "member_seq_table_generator")     // auto-increment
     private int memberNo;
 
     @Column(name="member_id")
@@ -35,7 +40,7 @@ public class Member {
 //    @Temporal(TemporalType.TIMESTAMP)       // DateTime 자료형
 //    @Temporal(TemporalType.DATE)              // Date 자료형
     @Temporal(TemporalType.TIME)              // Time 자료형
-    private java.util.Date enrollDate;
+    private Date enrollDate;
 
     @Column(name="member_role")
     private String memberRole;
