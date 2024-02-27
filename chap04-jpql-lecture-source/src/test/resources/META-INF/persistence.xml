@@ -17,7 +17,7 @@
             <property name="hibernate.format_sql" value="true"/>
 
             <!-- 설명. DML 구문 수행 시 자동으로 스키마 생성 (테이블 생성) 을 위한 설정-->
-            <property name="hibernate.hbm2ddl.auto" value="create"/>
+<!--            <property name="hibernate.hbm2ddl.auto" value="create"/>-->
         </properties>
     </persistence-unit>
 </persistence>
