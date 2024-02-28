@@ -109,4 +109,11 @@ public class MenuController {
         return menuService.findAllCategory();
     }
 
+    /* 설명. Spring Data JPA로 DML 작업하기 (insert,delete,update) */
+    @PostMapping("/regist")
+    public String registMenu(MenuDTO newMenu) {
+        menuService.registMenu(newMenu);
+
+        return "redirect:/menu/list";
+    }
 }
