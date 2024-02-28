@@ -47,8 +47,8 @@ public class PrimaryKeyMappingTests {
     public void 식별자_매핑_테스트() {
 
         // given
-        com.ohgiraffers.section03.primarykey.subsection01.identity.Member member =
-                new com.ohgiraffers.section03.primarykey.subsection01.identity.Member();
+        Member member =
+                new Member();
 //        member.setMemberNo(1);
         member.setMemberId("user01");
         member.setMemberPwd("pass01");

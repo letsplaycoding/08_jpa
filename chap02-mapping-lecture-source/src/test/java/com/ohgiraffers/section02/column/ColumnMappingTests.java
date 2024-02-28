@@ -36,7 +36,7 @@ public class ColumnMappingTests {
 
     @Test
     public void 컬럼에서_사용하는_속성_테스트() {
-        com.ohgiraffers.section02.column.Member member = new com.ohgiraffers.section02.column.Member();
+        Member member = new Member();
         member.setMemberNo(1);
         member.setMemberId("user01");
         member.setMemberPwd("pass01");
