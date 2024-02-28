@@ -84,11 +84,13 @@ public class MenuService {
         return categoryList.stream().map(category -> mapper.map(category,CategoryDTO.class)).collect(Collectors.toList());
     }
 
+    /* 필기. 메뉴 등록 */
     @Transactional
     public void registMenu(MenuDTO newMenu) {
         menuRepository.save(mapper.map(newMenu, Menu.class));
     }
 
+    /* 필기. 메뉴 수정 */
     @Transactional
     public void modifyMenu(MenuDTO modifyMenu) {
 
@@ -96,6 +98,7 @@ public class MenuService {
         foundMenu.setMenuName(modifyMenu.getMenuName());
     }
 
+    /* 필기. 메뉴 삭제 */
     @Transactional
     public void deleteMenu(int menuCode) {
         menuRepository.deleteById(menuCode);
